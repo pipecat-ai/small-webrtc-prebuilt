@@ -4,116 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <title>Pipecat UI</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/src/style.css" />
 </head>
 
 <body>
-  <div class="container">
-    <!-- Header with bot name and controls -->
-    <div class="header-bar">
-      <div class="bot-info">
-        <img src="/pipecat-logo.svg" alt="Pipecat" class="pipecat-logo">
-        <span id="bot-" class="app-title">Pipecat</span>
-      </div>
-      <div class="header-controls">
-        <!-- Camera toggle with dropdown -->
-        <div class="media-control">
-          <button id="camera-toggle" class="header-btn" data-state="muted" title="Turn on camera">
-            <span class="fa-solid fa-video"></span>
-          </button>
-          <button id="camera-chevron" class="chevron-btn" title="Select camera device">
-            <span class="fa-solid fa-chevron-up"></span>
-          </button>
-          <!-- Camera selection popover -->
-          <div id="camera-popover" class="device-popover">
-            <div class="device-info">
-              <button class="device-indicator"><span class="fa-solid fa-circle"></span></button>
-              <span id="current-video-device" class="device-name">Default device</span>
-            </div>
-            <select id="video-input" class="device-select">
-              <option value="">Default device</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Microphone toggle with dropdown -->
-        <div class="media-control">
-          <button id="mic-toggle" class="header-btn" data-state="unmuted" title="Mute microphone">
-            <span class="fa-solid fa-microphone"></span>
-          </button>
-          <button id="mic-chevron" class="chevron-btn" title="Select microphone device">
-            <span class="fa-solid fa-chevron-up"></span>
-          </button>
-          <!-- Microphone selection popover -->
-          <div id="mic-popover" class="device-popover">
-            <div class="device-info">
-              <button class="device-indicator"><span class="fa-solid fa-circle"></span></button>
-              <span id="current-audio-device" class="device-name">Default device</span>
-            </div>
-            <select id="audio-input" class="device-select">
-              <option value="">Default device</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Connect/Disconnect button with spinner -->
-        <button id="connect-btn" class="connect-btn" data-state="disconnected">
-          <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
-          <span class="btn-text">Connect</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Main content -->
-    <div class="main-content">
-      <div class="bot-container">
-        <!-- Video container -->
-        <div id="bot-video-container">
-          <video id="bot-video" autoplay playsinline></video>
-          <!-- Voice visualizer container -->
-          <div id="voice-visualizer-container" class="voice-visualizer-wrapper"></div>
-        </div>
-        <audio id="bot-audio" autoplay></audio>
-      </div>
-      <div id="bot-text-container" style="display: none;">
-        <div id="text-chat-log"></div>
-      </div>
-      <form id="input-area" style="display: none;">
-        <input type="text" id="message-input" placeholder="Type your message to the bot here..." required>
-        <button type="submit" id="send-btn">Send</button>
-      </form>
-      <div class="debug-panel">
-        <div id="debug-log"></div>
-      </div>
-    </div>
-
-    <!-- Hidden elements for compatibility -->
-    <div style="display: none;">
-      <button id="disconnect-btn">Disconnect</button>
-      <select id="audio-codec">
-        <option value="default" selected>Default codecs</option>
-        <option value="opus/48000/2">Opus</option>
-        <option value="PCMU/8000">PCMU</option>
-        <option value="PCMA/8000">PCMA</option>
-      </select>
-      <select id="video-codec">
-        <option value="default" selected>Default codecs</option>
-        <option value="VP8/90000">VP8</option>
-        <option value="H264/90000">H264</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Self-view video container -->
-  <div class="self-view-container" id="self-view-container">
-    <video id="self-view" autoplay playsinline muted></video>
-  </div>
-
-  <link rel="stylesheet" href="/src/style.css">
-  <script type="module" src="/src/app.ts"></script>
-  <script type="module" src="/src/voice-visualizer.ts"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
 </body>
 
 </html>

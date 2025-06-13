@@ -13,12 +13,20 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^3.8.1",
     "typescript": "^5.8.3",
     "vite": "^6.2.5"
   },
   "dependencies": {
-    "@pipecat-ai/client-js": "^0.3.5",
-    "@pipecat-ai/small-webrtc-transport": "^0.0.5"
+    "@fontsource-variable/geist": "^5.2.6",
+    "@fontsource-variable/geist-mono": "^5.2.6",
+    "@pipecat-ai/client-js": "^0.4.1",
+    "@pipecat-ai/client-react": "^0.4.1",
+    "@pipecat-ai/small-webrtc-transport": "^0.4.0",
+    "@pipecat-ai/ui": "*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }
