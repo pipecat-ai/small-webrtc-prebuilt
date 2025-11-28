@@ -17,10 +17,17 @@ createRoot(document.getElementById("root")!).render(
     <ThemeProvider>
       <FullScreenContainer>
         <ConsoleTemplate
-          connectParams={{
-            connectionUrl: "/api/offer",
+          startBotParams={{
+            endpoint: "/start",
+            requestData: {
+                createDailyRoom: false,
+                enableDefaultIceServers: true
+            }
           }}
           transportType="smallwebrtc"
+          transportOptions={{
+            waitForICEGathering: true,
+          }}
         />
       </FullScreenContainer>
     </ThemeProvider>
