@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pipecat-ai-small-webrtc-prebuilt"
-version = "1.0.0"
+version = "2.0.0"
 description = "A simple, ready-to-use client for testing the SmallWebRTCTransport."
 license = { text = "BSD 2-Clause License" }
 readme = "README.md"
