@@ -14,6 +14,11 @@ dependencies = [
     "fastapi[all]",  # Required at runtime
 ]
 
+[dependency-groups]
+dev = [
+    "setuptools~=78.1.1",
+]
+
 [project.urls]
 "Home" = "https://github.com/pipecat-ai/small-webrtc-prebuilt"
 
