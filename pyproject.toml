@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=64", "setuptools_scm>=8"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pipecat-ai-small-webrtc-prebuilt"
-dynamic = ["version"]
+version = "2.0.4"
 description = "A simple, ready-to-use client for testing the SmallWebRTCTransport."
 license = { text = "BSD 2-Clause License" }
 readme = "README.md"
@@ -26,7 +26,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "setuptools~=78.1.1",
-    "setuptools_scm~=8.3.1",
     "build~=1.2.2",
 ]
 
@@ -41,8 +40,4 @@ include = ["pipecat_ai_small_webrtc_prebuilt*"]
 
 [tool.setuptools.package-data]
 "pipecat_ai_small_webrtc_prebuilt" = ["client/dist/**/*"]
-
-[tool.setuptools_scm]
-local_scheme = "no-local-version"
-fallback_version = "0.0.0-dev"
 

@@ -91,9 +91,15 @@ Publishing is automated via GitHub Actions using trusted publishing (no API toke
 
 ### Prerequisites
 
-1. **Create a git tag:**
+1. **Update the version in `pyproject.toml`:**
+
+   ```toml
+   version = "2.0.3"
+   ```
+
+2. **Create a git tag:**
    ```bash
-   git tag -m v2.0.2 v2.0.2
+   git tag -m v2.0.3 v2.0.3
    git push --tags origin
    ```
 
@@ -109,7 +115,7 @@ The workflow will:
 
 - Build the client (React/Vite)
 - Bundle it into the Python package
-- Build the Python package with version from git tag
+- Build the Python package with version from `pyproject.toml`
 - Publish to both Test PyPI and PyPI
 
 ### Testing Before Production
