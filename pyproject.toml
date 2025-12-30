@@ -1,13 +1,22 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pipecat-ai-small-webrtc-prebuilt"
-version = "2.0.1"
+dynamic = ["version"]
 description = "A simple, ready-to-use client for testing the SmallWebRTCTransport."
 license = { text = "BSD 2-Clause License" }
 readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["webrtc", "pipecat", "voice", "ai"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Communications :: Conferencing",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Video",
+]
 
 # List your package dependencies
 dependencies = [
@@ -17,8 +26,23 @@ dependencies = [
 [dependency-groups]
 dev = [
     "setuptools~=78.1.1",
+    "setuptools_scm~=8.3.1",
+    "build~=1.2.2",
 ]
 
 [project.urls]
-"Home" = "https://github.com/pipecat-ai/small-webrtc-prebuilt"
+homepage = "https://github.com/pipecat-ai/small-webrtc-prebuilt"
+source = "https://github.com/pipecat-ai/small-webrtc-prebuilt"
+issues = "https://github.com/pipecat-ai/small-webrtc-prebuilt/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pipecat_ai_small_webrtc_prebuilt*"]
+
+[tool.setuptools.package-data]
+"pipecat_ai_small_webrtc_prebuilt" = ["client/dist/**/*"]
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+fallback_version = "0.0.0-dev"
 

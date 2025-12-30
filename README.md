@@ -80,51 +80,74 @@ Now you can test the local package with the sample app:
 ```bash
 cd test
 uv sync  # Installs dependencies and the local package in editable mode
-uv run python run.py
+uv run bot.py
 ```
 
 Then open http://localhost:7860 in your browser.
 
 ## 🚀 Publishing
 
-- Prepare to dist:
+Publishing is automated via GitHub Actions using trusted publishing (no API tokens needed).
 
-```shell
-./scripts/prepare_dist.sh
+### Prerequisites
+
+1. **Create a git tag:**
+   ```bash
+   git tag -m v2.0.2 v2.0.2
+   git push --tags origin
+   ```
+
+### Publishing Process
+
+1. **Go to GitHub Actions** in your repository
+2. **Select the "publish" workflow**
+3. **Click "Run workflow"**
+4. **Enter the git tag** (e.g., `v2.0.2`)
+5. **Click "Run workflow"**
+
+The workflow will:
+
+- Build the client (React/Vite)
+- Bundle it into the Python package
+- Build the Python package with version from git tag
+- Publish to both Test PyPI and PyPI
+
+### Testing Before Production
+
+To test publishing without creating a release:
+
+1. **Use the `publish-test` workflow** (publishes to Test PyPI only):
+
+   - Go to GitHub Actions → "publish-test" workflow
+   - Click "Run workflow"
+   - No git tag needed!
+
+2. **Install from Test PyPI**:
+
+   ```bash
+   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pipecat-ai-small-webrtc-prebuilt
+   ```
+
+3. **Test your changes**, then use the regular `publish` workflow for production
+
+### Local Build Testing
+
+To test the build locally before publishing:
+
+```bash
+# Build the client
+cd client
+npm install
+npm run build
+cd ..
+
+# Copy client to package
+mkdir -p pipecat_ai_small_webrtc_prebuilt/client
+cp -r client/dist pipecat_ai_small_webrtc_prebuilt/client/
+
+# Build the package
+uv build
+
+# Clean up
+rm -rf pipecat_ai_small_webrtc_prebuilt/client
 ```
-
-- Test the build using TestPyPI with Twine:
-
-Upload to TestPyPI using twine
-
-```shell
-twine upload --repository testpypi dist/*
-```
-
-Uninstall previous production version
-
-```shell
-pip uninstall pipecat-ai-small-webrtc-prebuilt
-```
-
-Test using pip to download packages from TestPyPI instead of PyPI
-
-```shell
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pipecat-ai-small-webrtc-prebuilt
-```
-
-Double check version
-
-```shell
-pip list |grep pipecat-ai-small-webrtc-prebuilt
-```
-
-Run test...
-
-Once you are happy, publish it to production.
-
-```shell
-twine upload dist/*
-```
-
-Profit.
