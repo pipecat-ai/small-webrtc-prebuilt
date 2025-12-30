@@ -5,7 +5,29 @@ All notable changes to **SmallWebRTC Prebuilt** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.1] - 2025-12-30
+
+### Changed
+
+- Updated client SDK dependency versions to latest @pipecat-ai versions.
+
+### Fixed
+
+- Resolved an issue where output audio devices could not be changed.
+
+## [2.0.0] - 2025-11-30
+
+### Changed
+
+- Refactor the client to use the voice-ui-kit's `startBotParams`.
+
+- Updated client SDK dependency versions to latest @pipecat-ai versions.
+
+## [1.0.0] - 2025-07-25
+
+### Changed
+
+- Migrated client SDK dependency versions to 1.x.x.
 
 ### Fixed
 
@@ -18,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.3] - 2025-05-23
 
-- Added text chat UI.  Toggle on by setting "bot-text-container" `div` and "input-area" `form` CSS to `display: flex`.
+- Added text chat UI. Toggle on by setting "bot-text-container" `div` and "input-area" `form` CSS to `display: flex`.
 
 ## [0.5.0] - 2025-04-11
 

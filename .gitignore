@@ -29,3 +29,6 @@ ENV/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# macOS
+.DS_Store
