@@ -4,34 +4,49 @@ This is a simple example app to help you test your Pipecat bot with a prebuilt U
 
 ---
 
+## 📋 Prerequisites
+
+- [uv](https://docs.astral.sh/uv/) installed on your system
+- [Node.js](https://nodejs.org/) (for building the client, if not already built)
+
+---
+
 ## 🚀 Setup
 
-1. **Create and activate a virtual environment:**
+1. **Build the client (if not already built):**
 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate
-    ```
+   The prebuilt UI package serves a built React client. If you're developing locally, you need to build it first:
+
+   ```bash
+   cd ../client
+   npm install
+   npm run build
+   cd ../test
+   ```
+
+   > **Note:** If you installed the package from PyPI, skip this step—the client is already built and bundled.
 
 2. **Install dependencies:**
 
-    ```bash
-    # Install the Pipecat prebuilt UI package
-    pip install -e ../
+   ```bash
+   uv sync
+   ```
 
-    # Install additional requirements
-    pip install -r requirements.txt
-    ```
+   This will:
+
+   - Create a virtual environment automatically
+   - Install all dependencies from `pyproject.toml`
+   - Install the local `pipecat-ai-small-webrtc-prebuilt` package in editable mode
 
 3. **Set up environment variables:**
 
-    ```bash
-    cp env.example .env
-    ```
+   ```bash
+   cp env.example .env
+   ```
 
 4. **Add API keys** to your `.env` file for:
 
-    - Google (e.g., for Speech-to-Text or other services)
+   - Google (e.g., for Speech-to-Text or other services)
 
 ---
 
@@ -40,11 +55,12 @@ This is a simple example app to help you test your Pipecat bot with a prebuilt U
 Once setup is complete, start the app with:
 
 ```bash
-python run.py
+uv run bot.py
 ```
 
 ## 🎉 Test with SmallWebRTC Prebuilt UI
 
 Open your browser and navigate to:
 👉 http://localhost:7860
-  - (Or use your custom port, if configured)
+
+- (Or use your custom port, if configured)

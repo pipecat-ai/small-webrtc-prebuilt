@@ -20,9 +20,10 @@ createRoot(document.getElementById("root")!).render(
           startBotParams={{
             endpoint: "/start",
             requestData: {
-                createDailyRoom: false,
-                enableDefaultIceServers: true
-            }
+              createDailyRoom: false,
+              enableDefaultIceServers: true,
+              transport: "webrtc",
+            },
           }}
           transportType="smallwebrtc"
           transportOptions={{

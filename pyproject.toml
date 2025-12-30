@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pipecat-ai-small-webrtc-prebuilt"
-version = "2.0.0"
+version = "2.0.1"
 description = "A simple, ready-to-use client for testing the SmallWebRTCTransport."
 license = { text = "BSD 2-Clause License" }
 readme = "README.md"
@@ -12,6 +12,11 @@ readme = "README.md"
 # List your package dependencies
 dependencies = [
     "fastapi[all]",  # Required at runtime
+]
+
+[dependency-groups]
+dev = [
+    "setuptools~=78.1.1",
 ]
 
 [project.urls]
