@@ -18,9 +18,13 @@ from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.processors.aggregators.llm_context import LLMContext
-from pipecat.processors.aggregators.llm_response_universal import LLMContextAggregatorPair
+from pipecat.processors.aggregators.llm_response_universal import (
+    AssistantTurnStoppedMessage,
+    LLMContextAggregatorPair,
+    LLMUserAggregatorParams,
+    UserTurnStoppedMessage,
+)
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessor
-from pipecat.processors.frameworks.rtvi import RTVIObserver, RTVIProcessor
 from pipecat.runner.types import RunnerArguments
 from pipecat.runner.utils import create_transport
 from pipecat.services.google.gemini_live.llm import GeminiLiveLLMService
@@ -39,11 +43,6 @@ transport_params = {
         video_in_enabled=True,
         video_out_enabled=True,
         video_out_is_live=True,
-        # set stop_secs to something roughly similar to the internal setting
-        # of the Multimodal Live api, just to align events. This doesn't really
-        # matter because we can only use the Multimodal Live API's phrase
-        # endpointing, for now.
-        vad_analyzer=SileroVADAnalyzer(params=VADParams(stop_secs=0.5)),
     ),
 }
 
@@ -108,20 +107,21 @@ async def run_bot(
             },
         ],
     )
-    context_aggregator = LLMContextAggregatorPair(context)
-
-    # RTVI events for Pipecat client UI
-    rtvi = RTVIProcessor()
+    user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
+        context,
+        user_params=LLMUserAggregatorParams(
+            vad_analyzer=SileroVADAnalyzer(params=VADParams(stop_secs=0.2)),
+        ),
+    )
 
     pipeline = Pipeline(
         [
             transport.input(),
-            context_aggregator.user(),
-            rtvi,
+            user_aggregator,
             llm,
             EdgeDetectionProcessor(params.video_out_width, params.video_out_height),
             transport.output(),
-            context_aggregator.assistant(),
+            assistant_aggregator,
         ]
     )
 
@@ -132,13 +132,11 @@ async def run_bot(
             enable_usage_metrics=True,
         ),
         idle_timeout_secs=runner_args.pipeline_idle_timeout_secs,
-        observers=[RTVIObserver(rtvi)],
     )
 
-    @rtvi.event_handler("on_client_ready")
+    @task.rtvi.event_handler("on_client_ready")
     async def on_client_ready(rtvi):
         logger.info("Pipecat client ready.")
-        await rtvi.set_bot_ready()
         await task.queue_frames([LLMRunFrame()])
 
     @transport.event_handler("on_client_connected")
@@ -149,6 +147,18 @@ async def run_bot(
     async def on_client_disconnected(transport, client):
         logger.info(f"Client disconnected")
         await task.cancel()
+
+    @user_aggregator.event_handler("on_user_turn_stopped")
+    async def on_user_turn_stopped(aggregator, strategy, message: UserTurnStoppedMessage):
+        timestamp = f"[{message.timestamp}] " if message.timestamp else ""
+        line = f"{timestamp}user: {message.content}"
+        logger.info(f"Transcript: {line}")
+
+    @assistant_aggregator.event_handler("on_assistant_turn_stopped")
+    async def on_assistant_turn_stopped(aggregator, message: AssistantTurnStoppedMessage):
+        timestamp = f"[{message.timestamp}] " if message.timestamp else ""
+        line = f"{timestamp}assistant: {message.content}"
+        logger.info(f"Transcript: {line}")
 
     runner = PipelineRunner(handle_sigint=runner_args.handle_sigint)
 
