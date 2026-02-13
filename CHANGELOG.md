@@ -5,6 +5,16 @@ All notable changes to **SmallWebRTC Prebuilt** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-02-13
+
+### Changed
+
+- Updated client SDK dependency versions to latest @pipecat-ai versions.
+
+### Fixed
+
+- Fixed an issue where reconnecting after a disconnect was not possible. The page had to be reloaded.
+
 ## [2.1.0] - 2026-02-05
 
 ### Changed
