@@ -5,6 +5,18 @@ All notable changes to **SmallWebRTC Prebuilt** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-03-13
+
+### Changed
+
+- Updated client dependencies to:
+  - `voice-ui-kit` to `0.8.1`
+  - `@pipecat-ai/client-js` to `1.6.1`
+  - `@pipecat-ai/client-react` to `1.2.0`
+
+  The update to `voice-ui-kit` improves conversation turn detection and karaoke
+  highlighting and optimizes the conversation rendering.
+
 ## [2.3.0] - 2026-02-25
 
 ### Changed
