@@ -2356,7 +2356,7 @@ webrtc = [
 
 [[package]]
 name = "pipecat-ai-small-webrtc-prebuilt"
-version = "2.3.0"
+version = "2.4.0"
 source = { editable = "../" }
 dependencies = [
     { name = "fastapi", extra = ["all"] },
