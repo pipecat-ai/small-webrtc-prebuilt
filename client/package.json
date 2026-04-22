@@ -17,7 +17,11 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^3.8.1",
     "typescript": "^5.8.3",
-    "vite": "^7.2.4"
+    "vite": "^7.3.2"
+  },
+  "overrides": {
+    "lodash": "^4.18.0",
+    "picomatch": "^4.0.4"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.6",
