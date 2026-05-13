@@ -1,17 +1,16 @@
-"use client";
-
 import {
   ConsoleTemplate,
   FullScreenContainer,
   ThemeProvider,
 } from "@pipecat-ai/voice-ui-kit";
-import React, { useState } from "react";
+import React, { StrictMode, useState } from "react";
+import { createRoot } from "react-dom/client";
 
 import {
   TwilioSerializer,
   WebSocketTransport,
 } from "@pipecat-ai/websocket-transport";
-import {PipecatClient, RTVIEvent} from "@pipecat-ai/client-js";
+import { PipecatClient, RTVIEvent } from "@pipecat-ai/client-js";
 
 type TransportType = "smallwebrtc" | "daily" | "websocket" | "twilio";
 
@@ -30,13 +29,12 @@ type TransportProps = Pick<
 
 function getTransportProps(
   type: TransportType,
-  botHost: string,
 ): TransportProps {
   switch (type) {
     case "smallwebrtc":
       return {
         startBotParams: {
-          endpoint: `${botHost}/start`,
+          endpoint: `/start`,
           requestData: {
             createDailyRoom: false,
             enableDefaultIceServers: true,
@@ -50,7 +48,7 @@ function getTransportProps(
     case "daily":
       return {
         startBotParams: {
-          endpoint: `${botHost}/start`,
+          endpoint: `/start`,
           requestData: {
             createDailyRoom: true,
             transport: "daily",
@@ -60,7 +58,7 @@ function getTransportProps(
     case "websocket":
       return {
         startBotParams: {
-          endpoint: `${botHost}/start`,
+          endpoint: `/start`,
           requestData: {
             transport: "websocket",
           },
@@ -69,7 +67,7 @@ function getTransportProps(
     case "twilio":
       return {
         startBotParams: {
-          endpoint: `${botHost}/start`,
+          endpoint: `/start`,
           requestData: {
             transport: "twilio",
           },
@@ -83,13 +81,11 @@ function getTransportProps(
   }
 }
 
-export default function Home() {
-  const botHost = process.env.NEXT_PUBLIC_BOT_HOST ?? "";
+function Home() {
   const [transportType, setTransportType] =
     useState<TransportType>("smallwebrtc");
   const { startBotParams, transportOptions } = getTransportProps(
     transportType,
-    botHost,
   );
 
   const emulateTwilioMessages = async (
@@ -183,3 +179,9 @@ export default function Home() {
     </ThemeProvider>
   );
 }
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Home />
+  </StrictMode>,
+);
