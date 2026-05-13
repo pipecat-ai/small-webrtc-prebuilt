@@ -3,9 +3,9 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pipecat-ai-small-webrtc-prebuilt"
-version = "2.5.0"
-description = "A simple, ready-to-use client for testing the SmallWebRTCTransport."
+name = "pipecat-ai-prebuilt"
+version = "1.0.0"
+description = "A simple, ready-to-use prebuilt client supporting all Pipecat transports."
 license = { text = "BSD 2-Clause License" }
 readme = "README.md"
 requires-python = ">=3.10"
@@ -30,14 +30,14 @@ dev = [
 ]
 
 [project.urls]
-homepage = "https://github.com/pipecat-ai/small-webrtc-prebuilt"
-source = "https://github.com/pipecat-ai/small-webrtc-prebuilt"
-issues = "https://github.com/pipecat-ai/small-webrtc-prebuilt/issues"
+homepage = "https://github.com/pipecat-ai/pipecat-prebuilt"
+source = "https://github.com/pipecat-ai/pipecat-prebuilt"
+issues = "https://github.com/pipecat-ai/pipecat-prebuilt/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["pipecat_ai_small_webrtc_prebuilt*"]
+include = ["pipecat_ai_prebuilt*"]
 
 [tool.setuptools.package-data]
-"pipecat_ai_small_webrtc_prebuilt" = ["client/dist/**/*"]
+"pipecat_ai_prebuilt" = ["client/dist/**/*"]
 

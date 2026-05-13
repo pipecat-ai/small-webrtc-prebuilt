@@ -27,8 +27,8 @@ jobs:
 
       - name: Move client dist to package
         run: |
-          mkdir -p pipecat_ai_small_webrtc_prebuilt/client
-          cp -r client/dist pipecat_ai_small_webrtc_prebuilt/client/
+          mkdir -p pipecat_ai_prebuilt/client
+          cp -r client/dist pipecat_ai_prebuilt/client/
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
@@ -56,7 +56,7 @@ jobs:
     needs: [build]
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/pipecat-ai-small-webrtc-prebuilt
+      url: https://test.pypi.org/p/pipecat-ai-prebuilt
     permissions:
       id-token: write
     steps:

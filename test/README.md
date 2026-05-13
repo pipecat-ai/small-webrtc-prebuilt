@@ -36,7 +36,7 @@ This is a simple example app to help you test your Pipecat bot with a prebuilt U
 
    - Create a virtual environment automatically
    - Install all dependencies from `pyproject.toml`
-   - Install the local `pipecat-ai-small-webrtc-prebuilt` package in editable mode
+   - Install the local `pipecat-ai-prebuilt` package in editable mode
 
 3. **Set up environment variables:**
 
@@ -58,7 +58,7 @@ Once setup is complete, start the app with:
 uv run bot.py
 ```
 
-## 🎉 Test with SmallWebRTC Prebuilt UI
+## 🎉 Test with Pipecat AI Prebuilt UI
 
 Open your browser and navigate to:
 👉 http://localhost:7860

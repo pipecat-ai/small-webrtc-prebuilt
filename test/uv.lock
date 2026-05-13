@@ -534,19 +534,14 @@ wheels = [
 ]
 
 [[package]]
-name = "deepgram-sdk"
-version = "6.1.1"
+name = "daily-python"
+version = "0.27.0"
 source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "httpx" },
-    { name = "pydantic" },
-    { name = "pydantic-core" },
-    { name = "typing-extensions" },
-    { name = "websockets" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/29/91/85360d998685fee6b570e12250e5ac74ca43420d5d22b44a865b6c3f2469/deepgram_sdk-6.1.1.tar.gz", hash = "sha256:78726f42b2386f80d9fdd92a22ac59ad5558b6c0475b29bb57273ddaaa344794", size = 202224, upload-time = "2026-03-27T19:59:57.202Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/7f/818ac35b40e38f225858cea38808c7fdd57292553479cabf0bebf7fcdc91/deepgram_sdk-6.1.1-py3-none-any.whl", hash = "sha256:329f45f2a084e8786d3e90d4a4aee630b85cf8770a3b2ee6323bedb176c47113", size = 576299, upload-time = "2026-03-27T19:59:55.949Z" },
+    { url = "https://files.pythonhosted.org/packages/6a/0c/57a46f95b58548503b4633ca1067e25cee401c6274b61446b340a891483d/daily_python-0.27.0-cp37-abi3-macosx_10_15_x86_64.whl", hash = "sha256:1a8143e33b024ee9bfa25646bb3263d41e11e2b99344cd214f9306ea47554d56", size = 13310124, upload-time = "2026-03-23T20:19:56.234Z" },
+    { url = "https://files.pythonhosted.org/packages/7e/4a/e691c1d3f4682fc564e59781cea1fff6c5b850112dcdd78bc69c930f8bed/daily_python-0.27.0-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:dfc724d788b47c2d522fba7b37e38aaba00fd5a04ebbf964e5d52503ccadc1ff", size = 11834682, upload-time = "2026-03-23T20:19:58.487Z" },
+    { url = "https://files.pythonhosted.org/packages/dd/ac/00adc5a83dc0474ab4ae9404157ea8435c99c52f41270e93b8a64b1e7ea8/daily_python-0.27.0-cp37-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:386671b415a5c31f5ffc9e473128ec228abc77d8cefd43cdc3ca0b5ca416122b", size = 13866110, upload-time = "2026-03-23T20:20:00.438Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/0a/f9162dccde2d0ad9dea1cfe43f02fc0abf7f535cd4172984855d66c27bc7/daily_python-0.27.0-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:740be060cc173bfb42b1f788f2c34f46a32769fe06ffc23931768e004b5dea85", size = 14412100, upload-time = "2026-03-23T20:20:02.304Z" },
 ]
 
 [[package]]
@@ -2011,20 +2006,13 @@ wheels = [
 ]
 
 [package.optional-dependencies]
-cartesia = [
-    { name = "websockets" },
-]
-deepgram = [
-    { name = "deepgram-sdk" },
-    { name = "websockets" },
+daily = [
+    { name = "daily-python" },
 ]
 google = [
     { name = "google-cloud-speech" },
     { name = "google-cloud-texttospeech" },
     { name = "google-genai" },
-    { name = "websockets" },
-]
-openai = [
     { name = "websockets" },
 ]
 runner = [
@@ -2039,8 +2027,8 @@ webrtc = [
 ]
 
 [[package]]
-name = "pipecat-ai-small-webrtc-prebuilt"
-version = "2.4.0"
+name = "pipecat-ai-prebuilt"
+version = "1.0.0"
 source = { editable = "../" }
 dependencies = [
     { name = "fastapi", extra = ["all"] },
@@ -2056,12 +2044,24 @@ dev = [
 ]
 
 [[package]]
+name = "pipecat-ai-small-webrtc-prebuilt"
+version = "2.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fastapi", extra = ["all"] },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2c/4f/40bfc9fc1a13f9b1f2657e292c51ff3e3516c530ca722effdcf342d465d9/pipecat_ai_small_webrtc_prebuilt-2.5.0.tar.gz", hash = "sha256:51481506b7b5dff10eff0357ff929cba504a5198c3393697178d2be9895ad9e6", size = 474299, upload-time = "2026-04-22T18:05:16.494Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/58/1a2e10c1fb7b44e47558cb6c0954e24a60f98afe912fe55c74fdee66f080/pipecat_ai_small_webrtc_prebuilt-2.5.0-py3-none-any.whl", hash = "sha256:23b1eee95662a0072d9ee5128b8567108eda10d5a54ad71f279730afbb678bfe", size = 474308, upload-time = "2026-04-22T18:05:14.552Z" },
+]
+
+[[package]]
 name = "pipecat-quickstart"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "pipecat-ai", extra = ["cartesia", "deepgram", "google", "openai", "runner", "webrtc"] },
-    { name = "pipecat-ai-small-webrtc-prebuilt" },
+    { name = "pipecat-ai", extra = ["daily", "google", "runner", "webrtc"] },
+    { name = "pipecat-ai-prebuilt" },
 ]
 
 [package.dev-dependencies]
@@ -2072,8 +2072,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pipecat-ai", extras = ["google", "openai", "cartesia", "deepgram", "silero", "webrtc", "runner"], specifier = ">=1.0.0" },
-    { name = "pipecat-ai-small-webrtc-prebuilt", editable = "../" },
+    { name = "pipecat-ai", extras = ["google", "daily", "silero", "webrtc", "runner"], specifier = ">=1.0.0" },
+    { name = "pipecat-ai-prebuilt", editable = "../" },
 ]
 
 [package.metadata.requires-dev]
