@@ -55,7 +55,7 @@ This is a simple example app to help you test your Pipecat bot with a prebuilt U
 Once setup is complete, start the app with:
 
 ```bash
-uv run bot-cascade.py # or bot-gemini-live.py
+uv run bot.py
 ```
 
 ## 🎉 Test with SmallWebRTC Prebuilt UI
