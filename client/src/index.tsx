@@ -24,8 +24,15 @@ const TRANSPORT_OPTIONS: { value: TransportType; label: string }[] = [
 
 type TransportProps = Pick<
   React.ComponentProps<typeof ConsoleTemplate>,
-  "startBotParams" | "transportOptions"
+  "startBotParams" | "transportOptions" | "startBotResponseTransformer"
 >;
+
+const websocketResponseTransformer = (response: unknown) => {
+  const { wsUrl, token } = response as { wsUrl: string; token?: string };
+  return {
+    wsUrl: token ? `${wsUrl}?token=${encodeURIComponent(token)}` : wsUrl,
+  };
+};
 
 function getTransportProps(
   type: TransportType,
@@ -63,6 +70,7 @@ function getTransportProps(
             transport: "websocket",
           },
         },
+        startBotResponseTransformer: websocketResponseTransformer,
       };
     case "twilio":
       return {
@@ -77,6 +85,7 @@ function getTransportProps(
           recorderSampleRate: 8000,
           playerSampleRate: 8000,
         },
+        startBotResponseTransformer: websocketResponseTransformer,
       };
   }
 }
@@ -84,9 +93,8 @@ function getTransportProps(
 function Home() {
   const [transportType, setTransportType] =
     useState<TransportType>("smallwebrtc");
-  const { startBotParams, transportOptions } = getTransportProps(
-    transportType,
-  );
+  const { startBotParams, transportOptions, startBotResponseTransformer } =
+    getTransportProps(transportType);
 
   const emulateTwilioMessages = async (
     websocketTransport: WebSocketTransport,
@@ -167,6 +175,7 @@ function Home() {
             }
             startBotParams={startBotParams}
             transportOptions={transportOptions}
+            startBotResponseTransformer={startBotResponseTransformer}
             noUserVideo={true}
             onClient={(client) => {
               client.on(RTVIEvent.Connected, async () => {
