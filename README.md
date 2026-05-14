@@ -1,9 +1,9 @@
-# SmallWebRTC Prebuilt
+# Pipecat AI Prebuilt
 
-A simple, ready-to-use client for testing the **SmallWebRTCTransport**.
+A simple, ready-to-use prebuilt client supporting all Pipecat transports.
 
-This prebuilt client provides basic WebRTC functionality and serves as a lightweight tool
-to quickly verify transport behavior without needing a custom implementation.
+This prebuilt client provides a lightweight UI to quickly test and verify transport
+behavior without needing a custom implementation.
 
 Ideal for development, debugging, and quick prototyping.
 
@@ -11,12 +11,12 @@ Ideal for development, debugging, and quick prototyping.
 
 ## 📦 Installation & Usage
 
-If you just want to **use** the prebuilt WebRTC client in your own Python project:
+If you just want to **use** the prebuilt client in your own Python project:
 
 ### ✅ Install from PyPI
 
 ```bash
-pip install pipecat-ai-small-webrtc-prebuilt
+pip install pipecat-ai-prebuilt
 ```
 
 ### 🧰 Example Usage
@@ -24,16 +24,16 @@ pip install pipecat-ai-small-webrtc-prebuilt
 ```python
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-from pipecat_ai_small_webrtc_prebuilt.frontend import SmallWebRTCPrebuiltUI
+from pipecat_ai_prebuilt.frontend import PipecatPrebuiltUI
 
 app = FastAPI()
 
-# Mount the frontend at /prebuilt
-app.mount("/prebuilt", SmallWebRTCPrebuiltUI)
+# Mount the frontend at /client
+app.mount("/client", PipecatPrebuiltUI)
 
 @app.get("/", include_in_schema=False)
 async def root_redirect():
-    return RedirectResponse(url="/prebuilt/")
+    return RedirectResponse(url="/client/")
 ```
 
 ### 🧪 Try a Sample App
@@ -56,8 +56,8 @@ If you want to work on the prebuilt client itself or use it locally in developme
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/your-org/small-webrtc-prebuilt.git
-cd small-webrtc-prebuilt
+git clone https://github.com/pipecat-ai/pipecat-prebuilt.git
+cd pipecat-ai-prebuilt
 ```
 
 2. **Build the Client**
@@ -94,12 +94,12 @@ Publishing is automated via GitHub Actions using trusted publishing (no API toke
 1. **Update the version in `pyproject.toml`:**
 
    ```toml
-   version = "2.0.3"
+   version = "1.0.0"
    ```
 
 2. **Create a git tag:**
    ```bash
-   git tag -m v2.0.3 v2.0.3
+   git tag -m v1.0.0 v1.0.0
    git push --tags origin
    ```
 
@@ -108,7 +108,7 @@ Publishing is automated via GitHub Actions using trusted publishing (no API toke
 1. **Go to GitHub Actions** in your repository
 2. **Select the "publish" workflow**
 3. **Click "Run workflow"**
-4. **Enter the git tag** (e.g., `v2.0.2`)
+4. **Enter the git tag** (e.g., `v1.0.0`)
 5. **Click "Run workflow"**
 
 The workflow will:
@@ -131,29 +131,33 @@ To test publishing without creating a release:
 2. **Install from Test PyPI**:
 
    ```bash
-   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pipecat-ai-small-webrtc-prebuilt
+   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pipecat-ai-prebuilt
    ```
 
 3. **Test your changes**, then use the regular `publish` workflow for production
 
 ### Local Build Testing
 
-To test the build locally before publishing:
+To test the build locally before publishing, use the provided build script.
+It builds the React client, bundles it into the Python package, and produces the distribution artifacts in `dist/`.
+
+**Run from the repo root:**
 
 ```bash
-# Build the client
-cd client
-npm install
-npm run build
-cd ..
+./scripts/local_build.sh
+```
 
-# Copy client to package
-mkdir -p pipecat_ai_small_webrtc_prebuilt/client
-cp -r client/dist pipecat_ai_small_webrtc_prebuilt/client/
+The script will:
 
-# Build the package
-uv build
+1. Clear any previous `dist/` artifacts
+2. Install client npm dependencies
+3. Build the React client (`client/dist/`)
+4. Copy the built client into the Python package
+5. Build the Python package with `uv build`
+6. Clean up the temporary client copy
 
-# Clean up
-rm -rf pipecat_ai_small_webrtc_prebuilt/client
+The resulting `.whl` and `.tar.gz` files will be in `dist/`. You can install the wheel directly to test it:
+
+```bash
+pip install dist/pipecat_ai_prebuilt-*.whl
 ```

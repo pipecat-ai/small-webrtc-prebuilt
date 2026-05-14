@@ -543,8 +543,8 @@ wheels = [
 ]
 
 [[package]]
-name = "pipecat-ai-small-webrtc-prebuilt"
-version = "2.4.0"
+name = "pipecat-ai-prebuilt"
+version = "2.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi", extra = ["all"] },

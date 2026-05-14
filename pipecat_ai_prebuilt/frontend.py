@@ -26,4 +26,4 @@ if not dist_dir:
         "Static frontend build not found. Please run `npm run build` in the client directory."
     )
 
-SmallWebRTCPrebuiltUI = StaticFiles(directory=dist_dir, html=True)
+PipecatPrebuiltUI = StaticFiles(directory=dist_dir, html=True)

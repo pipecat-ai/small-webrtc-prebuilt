@@ -7,8 +7,21 @@
 
 import os
 
-import cv2
-import numpy as np
+from fastapi.responses import RedirectResponse
+from pipecat.runner.run import app
+from pipecat.serializers.protobuf import ProtobufFrameSerializer
+from pipecat.transports.daily.transport import DailyParams
+from pipecat.transports.websocket.fastapi import FastAPIWebsocketParams
+from pipecat_ai_prebuilt.frontend import PipecatPrebuiltUI
+
+app.mount("/client", PipecatPrebuiltUI)
+
+
+@app.get("/", include_in_schema=False)
+async def root_redirect():
+    return RedirectResponse(url="/client/")
+
+
 from dotenv import load_dotenv
 from loguru import logger
 from pipecat.audio.vad.silero import SileroVADAnalyzer
@@ -24,12 +37,10 @@ from pipecat.processors.aggregators.llm_response_universal import (
     LLMUserAggregatorParams,
     UserTurnStoppedMessage,
 )
-from pipecat.processors.frame_processor import FrameDirection, FrameProcessor
 from pipecat.runner.types import RunnerArguments
 from pipecat.runner.utils import create_transport
 from pipecat.services.google.gemini_live.llm import GeminiLiveLLMService
-from pipecat.transports.base_transport import TransportParams
-from pipecat.transports.smallwebrtc.transport import SmallWebRTCTransport
+from pipecat.transports.base_transport import BaseTransport, TransportParams
 
 load_dotenv(override=True)
 
@@ -37,47 +48,25 @@ load_dotenv(override=True)
 # instantiated. The function will be called when the desired transport gets
 # selected.
 transport_params = {
+    "daily": lambda: DailyParams(
+        audio_in_enabled=True,
+        audio_out_enabled=True,
+    ),
+    "twilio": lambda: FastAPIWebsocketParams(
+        audio_in_enabled=True,
+        audio_out_enabled=True,
+    ),
     "webrtc": lambda: TransportParams(
         audio_in_enabled=True,
         audio_out_enabled=True,
-        video_in_enabled=True,
-        video_out_enabled=True,
-        video_out_is_live=True,
+    ),
+    "websocket": lambda: FastAPIWebsocketParams(
+        audio_in_enabled=True,
+        audio_out_enabled=True,
+        add_wav_header=False,
+        serializer=ProtobufFrameSerializer(),
     ),
 }
-
-
-class EdgeDetectionProcessor(FrameProcessor):
-    def __init__(self, camera_out_width, camera_out_height: int):
-        super().__init__()
-        self._camera_out_width = camera_out_width
-        self._camera_out_height = camera_out_height
-
-    async def process_frame(self, frame: Frame, direction: FrameDirection):
-        await super().process_frame(frame, direction)
-
-        if isinstance(frame, InputImageRawFrame):
-            # Convert bytes to NumPy array
-            img = np.frombuffer(frame.image, dtype=np.uint8).reshape(
-                (frame.size[1], frame.size[0], 3)
-            )
-
-            # perform edge detection
-            img = cv2.cvtColor(cv2.Canny(img, 100, 200), cv2.COLOR_GRAY2BGR)
-
-            # convert the size if needed
-            desired_size = (self._camera_out_width, self._camera_out_height)
-            if frame.size != desired_size:
-                resized_image = cv2.resize(img, desired_size)
-                frame = OutputImageRawFrame(resized_image.tobytes(), desired_size, frame.format)
-                await self.push_frame(frame)
-            else:
-                await self.push_frame(
-                    OutputImageRawFrame(image=img.tobytes(), size=frame.size, format=frame.format)
-                )
-        else:
-            await self.push_frame(frame, direction)
-
 
 SYSTEM_INSTRUCTION = f"""
 "You are Gemini Chatbot, a friendly, helpful robot.
@@ -90,9 +79,7 @@ Respond to what the user said in a creative and helpful way. Keep your responses
 """
 
 
-async def run_bot(
-    transport: SmallWebRTCTransport, runner_args: RunnerArguments, params: TransportParams
-):
+async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     llm = GeminiLiveLLMService(
         api_key=os.getenv("GOOGLE_API_KEY"),
         settings=GeminiLiveLLMService.Settings(
@@ -121,7 +108,6 @@ async def run_bot(
             transport.input(),
             user_aggregator,
             llm,
-            EdgeDetectionProcessor(params.video_out_width, params.video_out_height),
             transport.output(),
             assistant_aggregator,
         ]
@@ -169,10 +155,8 @@ async def run_bot(
 
 async def bot(runner_args: RunnerArguments):
     """Main bot entry point compatible with Pipecat Cloud."""
-    # Get the params for the webrtc transport
-    params = transport_params["webrtc"]()
     transport = await create_transport(runner_args, transport_params)
-    await run_bot(transport, runner_args, params)
+    await run_bot(transport, runner_args)
 
 
 if __name__ == "__main__":

@@ -34,8 +34,8 @@ jobs:
 
       - name: Move client dist to package
         run: |
-          mkdir -p pipecat_ai_small_webrtc_prebuilt/client
-          cp -r client/dist pipecat_ai_small_webrtc_prebuilt/client/
+          mkdir -p pipecat_ai_prebuilt/client
+          cp -r client/dist pipecat_ai_prebuilt/client/
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
@@ -55,4 +55,4 @@ jobs:
         run: uv pip install --editable .
 
       - name: Verify installation
-        run: uv run python -c "from pipecat_ai_small_webrtc_prebuilt.frontend import SmallWebRTCPrebuiltUI; print('Package imported successfully')"
+        run: uv run python -c "from pipecat_ai_prebuilt.frontend import PipecatPrebuiltUI; print('Package imported successfully')"

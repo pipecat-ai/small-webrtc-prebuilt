@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **SmallWebRTC Prebuilt** will be documented in this file.
+All notable changes to **Pipecat AI Prebuilt** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -137,6 +137,6 @@ Internal release for testing workflows.
 
 ### Added
 
-- A simple, ready-to-use client for testing the **SmallWebRTCTransport**.
-  This prebuilt client provides basic WebRTC functionality and serves as a lightweight tool
-  to quickly verify transport behavior without needing a custom implementation.
+- A simple, ready-to-use prebuilt client supporting all Pipecat transports.
+  This prebuilt client provides a lightweight UI to quickly verify transport
+  behavior without needing a custom implementation.

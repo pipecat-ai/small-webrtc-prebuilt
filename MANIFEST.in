@@ -1,1 +1,1 @@
-recursive-include pipecat_ai_small_webrtc_prebuilt/client/dist *
+recursive-include pipecat_ai_prebuilt/client/dist *
