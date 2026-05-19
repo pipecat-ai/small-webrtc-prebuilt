@@ -5,6 +5,14 @@ All notable changes to **Pipecat AI Prebuilt** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.1] - 2026-05-19
+
+### Changed
+
+- Moved the transport selector into the console header and updated it to use
+  the `voice-ui-kit` Select component.
+- Restored the Pipecat logo next to the header title and refined header spacing.
+
 ## [2.5.0] - 2026-04-22
 
 ### Changed

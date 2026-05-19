@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pipecat-ai-prebuilt"
-version = "1.0.0"
+version = "2.5.1"
 description = "A simple, ready-to-use prebuilt client supporting all Pipecat transports."
 license = { text = "BSD 2-Clause License" }
 readme = "README.md"
@@ -40,4 +40,3 @@ include = ["pipecat_ai_prebuilt*"]
 
 [tool.setuptools.package-data]
 "pipecat_ai_prebuilt" = ["client/dist/**/*"]
-
