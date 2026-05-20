@@ -5,13 +5,44 @@ All notable changes to **Pipecat AI Prebuilt** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.5.1] - 2026-05-19
+## Package rename note
+
+This project was previously published as `pipecat-ai-small-webrtc-prebuilt`.
+That package is now end-of-life, and its final release was `2.5.0`.
+
+The current package is `pipecat-ai-prebuilt`. Its first release was `1.0.0`.
+Users should install:
+
+```bash
+pip install pipecat-ai-prebuilt
+```
+
+## [1.0.1] - 2026-05-20
 
 ### Changed
 
 - Moved the transport selector into the console header and updated it to use
   the `voice-ui-kit` Select component.
 - Restored the Pipecat logo next to the header title and refined header spacing.
+
+## [1.0.0] - 2026-05-14
+
+### Changed
+
+- Renamed the package from `pipecat-ai-small-webrtc-prebuilt` to
+  `pipecat-ai-prebuilt`.
+- Expanded the prebuilt client from Small WebRTC-specific support to support
+  all Pipecat transports.
+- Renamed the Python package module from `small_webrtc_prebuilt` to
+  `pipecat_ai_prebuilt`.
+- Updated project metadata, README, publishing workflows, test app, and local
+  build tooling for the new package name.
+- Added `scripts/local_build.sh` for local package builds.
+
+## Legacy `pipecat-ai-small-webrtc-prebuilt` history
+
+The following releases belong to the old `pipecat-ai-small-webrtc-prebuilt`
+package line and are kept for historical reference.
 
 ## [2.5.0] - 2026-04-22
 
@@ -90,9 +121,9 @@ Internal release for testing workflows.
 
 - Refactor the client to use the voice-ui-kit's `startBotParams`.
 
-- Updated client SDK dependency versions to latest @pipecat-ai versions.
+- Updated client SDK dependency versions to latest `@pipecat-ai` versions.
 
-## [1.0.0] - 2025-07-25
+## `pipecat-ai-small-webrtc-prebuilt` [1.0.0] - 2025-07-25
 
 ### Changed
 
