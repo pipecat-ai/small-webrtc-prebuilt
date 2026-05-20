@@ -1,6 +1,12 @@
 import {
   ConsoleTemplate,
   FullScreenContainer,
+  Select,
+  SelectContent,
+  SelectGuide,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   ThemeProvider,
 } from "@pipecat-ai/voice-ui-kit";
 import React, { StrictMode, useState } from "react";
@@ -90,6 +96,37 @@ function getTransportProps(
   }
 }
 
+type TransportSelectProps = {
+  value: TransportType;
+  onValueChange: (value: TransportType) => void;
+};
+
+function TransportSelect({ value, onValueChange }: TransportSelectProps) {
+  return (
+    <Select
+      value={value}
+      onValueChange={(next) => onValueChange(next as TransportType)}
+    >
+      <SelectTrigger
+        aria-label="Transport"
+        className="transport-select-trigger"
+        rounded="lg"
+        size="md"
+      >
+        <SelectGuide>Transport</SelectGuide>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {TRANSPORT_OPTIONS.map(({ value, label }) => (
+          <SelectItem key={value} value={value}>
+            {label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
 function Home() {
   const [transportType, setTransportType] =
     useState<TransportType>("smallwebrtc");
@@ -126,64 +163,27 @@ function Home() {
   return (
     <ThemeProvider>
       <FullScreenContainer className="items-stretch justify-start">
-        <div
-          style={{
-            padding: "8px 16px",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            borderBottom: "1px solid var(--border)",
-            background: "var(--background)",
+        <ConsoleTemplate
+          key={transportType}
+          transportType={
+            transportType === "twilio" ? "websocket" : transportType
+          }
+          startBotParams={startBotParams}
+          transportOptions={transportOptions}
+          startBotResponseTransformer={startBotResponseTransformer}
+          noUserVideo={true}
+          logoComponent={
+            <TransportSelect
+              value={transportType}
+              onValueChange={setTransportType}
+            />
+          }
+          onClient={(client) => {
+            client.on(RTVIEvent.Connected, async () => {
+              await onClientConnected(client);
+            });
           }}
-        >
-          <label
-            htmlFor="transport-select"
-            style={{
-              fontSize: "0.875rem",
-              fontWeight: 500,
-              color: "var(--foreground)",
-            }}
-          >
-            Transport:
-          </label>
-          <select
-            id="transport-select"
-            value={transportType}
-            onChange={(e) => setTransportType(e.target.value as TransportType)}
-            style={{
-              padding: "4px 8px",
-              borderRadius: "6px",
-              border: "1px solid var(--border)",
-              background: "var(--background)",
-              color: "var(--foreground)",
-              fontSize: "0.875rem",
-              cursor: "pointer",
-            }}
-          >
-            {TRANSPORT_OPTIONS.map(({ value, label }) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div style={{ flex: 1, minHeight: 0 }}>
-          <ConsoleTemplate
-            key={transportType}
-            transportType={
-              transportType === "twilio" ? "websocket" : transportType
-            }
-            startBotParams={startBotParams}
-            transportOptions={transportOptions}
-            startBotResponseTransformer={startBotResponseTransformer}
-            noUserVideo={true}
-            onClient={(client) => {
-              client.on(RTVIEvent.Connected, async () => {
-                await onClientConnected(client);
-              });
-            }}
-          />
-        </div>
+        />
       </FullScreenContainer>
     </ThemeProvider>
   );
