@@ -1,12 +1,6 @@
 import {
   ConsoleTemplate,
   FullScreenContainer,
-  Select,
-  SelectContent,
-  SelectGuide,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   ThemeProvider,
 } from "@pipecat-ai/voice-ui-kit";
 import React, { StrictMode, useState } from "react";
@@ -18,7 +12,9 @@ import {
 } from "@pipecat-ai/websocket-transport";
 import { PipecatClient, RTVIEvent } from "@pipecat-ai/client-js";
 
-type TransportType = "smallwebrtc" | "daily" | "websocket" | "twilio";
+import { MoqDemo } from "./MoqDemo";
+
+type TransportType = "smallwebrtc" | "daily" | "websocket" | "twilio" | "moq";
 
 const TRANSPORT_OPTIONS: { value: TransportType; label: string }[] = [
   { value: "smallwebrtc", label: "SmallWebRTC" },
@@ -26,6 +22,9 @@ const TRANSPORT_OPTIONS: { value: TransportType; label: string }[] = [
   { value: "websocket", label: "WebSocket" },
   // Twilio is also a websocket transport, just with a special serializer
   { value: "twilio", label: "Twilio" },
+  // MoQ doesn't go through ConsoleTemplate yet (voice-ui-kit doesn't
+  // know about it). Selecting "MoQ" renders a custom MoqDemo component.
+  { value: "moq", label: "MoQ" },
 ];
 
 type TransportProps = Pick<
@@ -41,7 +40,7 @@ const websocketResponseTransformer = (response: unknown) => {
 };
 
 function getTransportProps(
-  type: TransportType,
+  type: Exclude<TransportType, "moq">,
 ): TransportProps {
   switch (type) {
     case "smallwebrtc":
@@ -96,42 +95,20 @@ function getTransportProps(
   }
 }
 
-type TransportSelectProps = {
-  value: TransportType;
-  onValueChange: (value: TransportType) => void;
-};
-
-function TransportSelect({ value, onValueChange }: TransportSelectProps) {
-  return (
-    <Select
-      value={value}
-      onValueChange={(next) => onValueChange(next as TransportType)}
-    >
-      <SelectTrigger
-        aria-label="Transport"
-        className="transport-select-trigger"
-        rounded="lg"
-        size="md"
-      >
-        <SelectGuide>Transport</SelectGuide>
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        {TRANSPORT_OPTIONS.map(({ value, label }) => (
-          <SelectItem key={value} value={value}>
-            {label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-}
-
 function Home() {
   const [transportType, setTransportType] =
     useState<TransportType>("smallwebrtc");
+
+  const isMoq = transportType === "moq";
+  // `getTransportProps` doesn't have a "moq" branch — we render
+  // `<MoqDemo>` instead of `<ConsoleTemplate>` when MoQ is selected.
+  const consoleProps = isMoq ? null : getTransportProps(transportType);
   const { startBotParams, transportOptions, startBotResponseTransformer } =
-    getTransportProps(transportType);
+    consoleProps ?? {
+      startBotParams: undefined,
+      transportOptions: undefined,
+      startBotResponseTransformer: undefined,
+    };
 
   const emulateTwilioMessages = async (
     websocketTransport: WebSocketTransport,
@@ -163,27 +140,69 @@ function Home() {
   return (
     <ThemeProvider>
       <FullScreenContainer className="items-stretch justify-start">
-        <ConsoleTemplate
-          key={transportType}
-          transportType={
-            transportType === "twilio" ? "websocket" : transportType
-          }
-          startBotParams={startBotParams}
-          transportOptions={transportOptions}
-          startBotResponseTransformer={startBotResponseTransformer}
-          noUserVideo={true}
-          logoComponent={
-            <TransportSelect
-              value={transportType}
-              onValueChange={setTransportType}
-            />
-          }
-          onClient={(client) => {
-            client.on(RTVIEvent.Connected, async () => {
-              await onClientConnected(client);
-            });
+        <div
+          style={{
+            padding: "12px 16px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
           }}
-        />
+        >
+          <label
+            htmlFor="transport-select"
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              color: "var(--foreground)",
+            }}
+          >
+            Transport:
+          </label>
+          <select
+            id="transport-select"
+            value={transportType}
+            onChange={(e) => setTransportType(e.target.value as TransportType)}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "6px",
+              border: "1px solid var(--border)",
+              background: "var(--background)",
+              color: "var(--foreground)",
+              fontSize: "0.875rem",
+              cursor: "pointer",
+            }}
+          >
+            {TRANSPORT_OPTIONS.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div style={{ flex: 1, minHeight: 0 }}>
+          {isMoq ? (
+            <MoqDemo />
+          ) : (
+            <ConsoleTemplate
+              key={transportType}
+              transportType={
+                transportType === "twilio" ? "websocket" : (transportType as
+                  | "smallwebrtc"
+                  | "daily"
+                  | "websocket")
+              }
+              startBotParams={startBotParams}
+              transportOptions={transportOptions}
+              startBotResponseTransformer={startBotResponseTransformer}
+              noUserVideo={true}
+              onClient={(client) => {
+                client.on(RTVIEvent.Connected, async () => {
+                  await onClientConnected(client);
+                });
+              }}
+            />
+          )}
+        </div>
       </FullScreenContainer>
     </ThemeProvider>
   );
